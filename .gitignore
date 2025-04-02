@@ -1,0 +1,7 @@
+# Virtual environment
+mlops/
+__pycache__/
+*.pyc
+
+# Data files
+data/

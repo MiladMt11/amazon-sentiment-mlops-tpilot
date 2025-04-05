@@ -1,15 +1,20 @@
-# Ignore data
+# virtual environment
+mlops/
+
+# training outputs
+model_*/               
+outputs_*/
+
+# data
 data/
 
-# Ignore training artifacts
-outputs/
-model/
-logs/
+# MLflow tracking files
+mlruns/
 
-# Ignore Python junk
+# mac system files
+.DS_Store
 __pycache__/
 *.pyc
 
-# Ignore virtual environments
-mlops/.ipynb_checkpoints/
-.DS_Store
+# Jupyter autosaves
+notebooks/.ipynb_checkpoints/

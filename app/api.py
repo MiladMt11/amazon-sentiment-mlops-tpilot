@@ -1,5 +1,5 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel, StrictStr
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
 import torch
 import time
@@ -7,19 +7,21 @@ import logging
 import uuid
 from datetime import datetime
 
-# Structured logs
+# Structured logs to be saved
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
+    handlers=[
+        logging.FileHandler("logs/api.log"),
+        logging.StreamHandler()
+    ]
 )
-
-
 
 # --------------------
 # Load Model and Tokenizer
 # --------------------
 
-model_path = "./model_3epochs"
+model_path = "model_3epochs"
 tokenizer = DistilBertTokenizerFast.from_pretrained(model_path)
 model = DistilBertForSequenceClassification.from_pretrained(model_path)
 model.eval()
@@ -32,10 +34,13 @@ app = FastAPI()
 
 # Request body schema
 class ReviewInput(BaseModel):
-    text: str
+    text: StrictStr
 
 # ID to label mapping {0: "negative", 1: "neutral", 2: "positive"}
 id2label = model.config.id2label
+
+# Get the number of max tokens accepted by the model
+MAX_TOKENS = tokenizer.model_max_length
 
 # --------------------
 # Predict Endpoint
@@ -50,7 +55,17 @@ async def predict_sentiment(review: ReviewInput):
     input_text = review.text
     input_length = len(input_text)
 
-    # Tokenize input
+    # Reject empty string input
+    if not input_text:
+        raise HTTPException(status_code=400, detail="Input text must not be empty")
+    
+    # Truncatiion check for inputs longer than MAX_TOKENS accepted by the model
+    tokenized_untruncated = tokenizer(input_text, return_tensors="pt", truncation=False)
+    token_count = tokenized_untruncated["input_ids"].shape[1]
+
+    was_truncated = token_count > MAX_TOKENS
+
+    # Tokenize input for inference
     inputs = tokenizer(input_text, return_tensors="pt", truncation=True, padding=True)
 
     # Inference
@@ -65,13 +80,16 @@ async def predict_sentiment(review: ReviewInput):
     logging.info(
     f"\n[Request ID: {request_id[:8]}]\n"
     f"Timestamp:     {timestamp}\n"
+    f"Input text:  {input_text}\n"
     f"Input length:  {input_length}\n"
     f"Prediction:    {prediction_label}\n"
+    f"Input truncated:     {was_truncated}\n"
     f"Latency:       {latency_ms}ms\n"
     )
 
 
     return {
         "prediction": prediction_label,
-        "latency_ms": latency_ms
+        "latency_ms": latency_ms,
+        "input_truncated": was_truncated
     }

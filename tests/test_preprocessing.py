@@ -13,6 +13,7 @@ def test_map_sentiment_labels_basic():
     df = pd.DataFrame({"sentiment": ["positive", "neutral", "negative"]})
     result = map_sentiment_labels(df)
 
+    assert "label" in result.columns
     assert list(result["label"]) == [2, 1, 0]
 
 

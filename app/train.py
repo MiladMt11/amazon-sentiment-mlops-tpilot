@@ -95,7 +95,7 @@ def tokenize_dataset(dataset: Dataset, tokenizer, text_column: str = "text_clean
 # Main
 # ----------------------
 
-def main(epochs: int = 3):
+def main(epochs: float = 3):
     # Define model output paths
     model_dir = f"./model_{epochs}epochs"
     output_dir = f"./outputs_{epochs}epochs"

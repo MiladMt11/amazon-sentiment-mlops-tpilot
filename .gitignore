@@ -10,8 +10,9 @@ data/
 
 # MLflow tracking files
 mlruns/
+logs/
 
-# mac system files
+# system files
 .DS_Store
 __pycache__/
 *.pyc

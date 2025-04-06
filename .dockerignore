@@ -1,0 +1,21 @@
+notebooks/
+
+data/
+
+# training files
+model_5epochs/
+outputs_*/
+
+# virtualenv
+mlops/
+
+# MLflow logs
+mlruns/
+logs/
+
+# system files
+.DS_Store
+
+# git history and tests
+.git/
+tests/

@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, StrictStr
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
@@ -6,6 +7,8 @@ import time
 import logging
 import uuid
 from datetime import datetime
+
+os.makedirs("logs", exist_ok=True) # Make sure directory exits to prevent crash
 
 # Structured logs to be saved
 logging.basicConfig(

@@ -1,6 +1,7 @@
 import pandas as pd
 import requests
 import time
+import numpy as np
 
 # ----------------------------
 # Load Holdout Data
@@ -35,6 +36,9 @@ for i, row in df.iterrows():
     # Print individual result
     print(f"[{i+1}] Prediction: {result['prediction']} | API Latency (reported): {result['latency_ms']}ms | Round-trip: {round(latency, 2)}ms")
 
+# Exact p99 measurment
+p99 = round(np.percentile(latencies, 99), 2)
+
 # ----------------------------
 # Print Summary
 # ----------------------------
@@ -43,4 +47,5 @@ print("\n-----------------------------")
 print(f"Total requests: {len(latencies)}")
 print(f"Max round-trip latency: {round(max(latencies), 2)}ms")
 print(f"Average round-trip latency: {round(sum(latencies)/len(latencies), 2)}ms")
+print(f"P99 round-trip latency: {p99}ms")
 print("-----------------------------")

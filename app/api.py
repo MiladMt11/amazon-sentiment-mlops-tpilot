@@ -24,7 +24,7 @@ logging.basicConfig(
 # Load Model and Tokenizer
 # --------------------
 
-model_path = "model_3epochs"
+model_path = "MiladMt/sentiment-api-model"
 tokenizer = DistilBertTokenizerFast.from_pretrained(model_path)
 model = DistilBertForSequenceClassification.from_pretrained(model_path)
 model.eval()

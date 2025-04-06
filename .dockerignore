@@ -1,7 +1,5 @@
 notebooks/
 
-data/
-
 # training files
 model_5epochs/
 outputs_*/

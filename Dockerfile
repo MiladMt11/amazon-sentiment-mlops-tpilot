@@ -7,10 +7,6 @@ WORKDIR /app
 # Copy everything to container
 COPY . .
 
-# Copy prefered model
-COPY model_3epochs/ model_3epochs/
-
-
 # Install dependencies
 RUN pip install --upgrade pip && \
     pip install -r requirements.txt

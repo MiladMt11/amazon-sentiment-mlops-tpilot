@@ -2,7 +2,7 @@ from huggingface_hub import create_repo, upload_folder
 import os
 
 # Define HF username and desired repo name
-HF_USERNAME = "MiladMt"
+HF_USERNAME = "your HF username"
 REPO_NAME = "sentiment-api-model"
 LOCAL_MODEL_DIR = "model_3epochs"
 

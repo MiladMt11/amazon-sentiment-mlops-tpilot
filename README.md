@@ -1,4 +1,4 @@
-# Trustpilot Sentiment Classification - MLOps Case
+# Sentiment Classification - ML Interview Case
 
 This repository contains a complete ML pipeline for a sentiment classification system trained on Amazon book reviews. The project was completed as part of a take-home interview case and includes data preprocessing, model training using Hugging Face Transformers, API deployment via FastAPI, experiment tracking with MLflow, testing, and Dockerization.
 
